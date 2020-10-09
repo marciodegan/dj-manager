@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% load mathfilters %}
+{% load humanize %}
+
+{% block title %}Lista de Tarefas{% endblock %}
+
+
+
+{% block content %}
+
+<div class="offset-1 col-10 list-div">
+    <div class="col-sm-6">
+        <table class ="table table-sm">
+            <thead class="thead-dark">
+                <tr>
+                    <th class="text-center">Produto</th>
+                </tr>
+            </thead>
+                <tr>
+                    <td class="text-center">{{ product.name }}</td>
+                </tr>
+        </table>
+        
+    </div>
+
+
+  <h6>FATURAMENTO PREVISTO: {{ salessum }}</h6>
+            
+
+    <div class="col-sm-6">
+     
+        <table class ="table table-sm">
+            <thead class="thead-dark">
+                <tr>
+                    <th class="text-center">Categoria</th>
+                    <th class="text-center">Total</th>
+                    <th class="text-center">Unitario</th>
+                    <th class="text-center">%</th>
+                </tr>
+            </thead>
+                
+                <tr>
+                    <td class="text-center"><a href="/product/edit/{{product.id}}/{{budget.id}}">PREÇO VENDA</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"><a href="/product/edit/{{product.id}}">${{product.salesprice|stringformat:".2f"}}</td>
+                    <td class="text-center">100%</td>
+                </tr>
+                <tr>
+                    <td class="text-center"><a href="/product/edit/{{product.id}}">PREÇO COMPRA</td>
+                    <td class="text-center"></td>
+                    <td class="text-center"><a href="/product/edit/{{product.id}}">${{product.buyprice|stringformat:".2f"}}</td>
+                    <td class="text-center">{{ buy_sell }}%</td>
+                </tr>
+                          
+        </table>
+    </div>
+    <div class="col-sm-6">
+        <table class ="table table-sm">
+                <thead class="thead-dark">
+                    <tr>
+                        <th class="text-center">Categoria</th>
+                        <th class="text-center"></th>
+                        <th class="text-center">Unitário</th>
+                        <th class="text-center">%</th>
+                    </tr>
+                </thead> 
+            
+                {% for i in data %}
+                    <tr>  
+                        <td class="text-center"><a href="/budget/{{budget.id}}/lancamentoupdate/{{i.id}}">{{i.label}}</td>
+                        <td class="text-center"><font size="1">${{i.value}}</font></td>
+                        <td class="text-center">${{i.value|div:salessum|mul:product.salesprice|stringformat:".2f"}}</td>
+                        <td class="text-center">{{i.value|div:salessum|mul:100|stringformat:".2f"}}%</td>
+                    </tr>
+                {% endfor %}
+                    <tr>  
+                        <td class="text-center">EMBALAGEM</td>
+                        <td class="text-center"></td>
+                        <td class="text-center">${{ product.package_cost|stringformat:".2f" }}</td>
+                        <td class="text-center">{{ package_total|stringformat:".2f" }}%</td>
+                    </tr>
+                    <tr>  
+                        <td class="text-center">COMISSÕES</td>
+                        <td class="text-center"></td>
+                        <td class="text-center">${{ product.sales_comission|stringformat:".2f" }}</td>
+                        <td class="text-center">{{ sales_comission|stringformat:".2f" }}%</td>
+                    </tr>
+                    <tr>  
+                        <td class="text-center">BONUS</td>
+                        <td class="text-center"></td>
+                        <td class="text-center">${{ product.bonus|stringformat:".2f" }}</td>
+                        <td class="text-center">{{ bonus|stringformat:".2f" }}%</td>
+                    </tr>
+                    <tr>  
+                        <td class="text-center">IMPOSTOS</td>
+                        <td class="text-center"></td>
+                        <td class="text-center">${{ tax_total|stringformat:".2f" }}</td>
+                        <td class="text-center">{{ budget.tax|stringformat:".2f" }}%</td>
+                    </tr>
+                    <tr style="background-color:powderblue;"> 
+                        <td class="text-center">MARGEM FINAL</td>
+                        <td class="text-center"></td>
+                        <td class="text-center">${{ total_cash|stringformat:".2f" }}</td>
+                        <td class="text-center">{{ total_geral|stringformat:".2f" }}%</td>
+                    
+                    </tr>
+        </table>
+    </div>
+</div>
+{% endblock %}

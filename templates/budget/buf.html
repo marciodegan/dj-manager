@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load render_table from django_tables2 %}
+{% render_table pivot_table %}
+{% load django_tables2 %}
+{% render_table table %}
+
+{% block title %}Lista de Tarefas{% endblock %}
+
+{% block content %}
+{% render_table table %}
+
+<div class="offset-1 col-10 list-div">
+    <h1>{{budget.name}}</h1>
+    <p>{{budget.description}}</p>
+    <div class="shadow p-3 mb-3 rounded bg-light">
+        <table class ="table table-sm">
+            <thead class="thead-dark">
+                <tr>
+                    <th class="text-center">LANCAMENTO</th>
+                    <th class="text-center">LANCAMENTO</th>
+                    <th class="text-center">LANCAMENTO</th>
+                </tr>
+            </thead>
+            
+            {% for i in result %}
+                <tr>
+                    <td class="align-middle" align="center">{{ i.lancamento__category__category }}</td>
+                    <td class="align-middle">{{ i.month__name }}</td>
+                    <td class="align-middle" align="center">{{ i.amount__sum }}</td>
+                </tr>  
+            {% endfor %}
+            {{ pivot_table }}
+        </table>
+    </div>
+
+
+    {{ sum_lancamento }}
+
+
+
+</div>
+{% endblock %}
+
+
+
+
+            
+
+

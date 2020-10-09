@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load mathfilters %}
+{% load humanize %}
+<!-- Custom styles for this page -->
+
+{% block style %}<link href="{% static 'vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">{% endblock %}
+
+{% block title %}Produtos{% endblock %}
+{% block content %}
+ 
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+          <!-- Page Heading -->
+          <h3 class="h3 mb-2 text-gray-800 text-right">Produtos / Analítico</h3>
+          {% comment %} <p class="mb-4"></p> {% endcomment %}
+
+          <!-- DataTales Example -->
+          <div class="card shadow mb-4">
+          
+            <div class="card-header py-3">  
+                <a href="/product/list" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Simplificado</a>
+                <a href="/product/list/analytics" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Analítico</a>
+            </div>
+
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="10">
+          
+                  <thead>
+                    <tr>
+                        <th style="background-color:#F8F8F8;">Produto</th>
+                        <th style="background-color:#F8F8F8;">Ref</th>
+                        <th>Venda</th>
+                        <th>%</th>
+                        <th style="background-color:#F8F8F8;">Compra</th>
+                        <th style="background-color:#F8F8F8;">%</th>
+                        <th>Fixos</th>
+                        <th>%</th>
+                        <th style="background-color:#F8F8F8;">Embal.</th>
+                        <th style="background-color:#F8F8F8;">%</th>
+                        <th>Comis.</th>
+                        <th>%</th>
+                        <th style="background-color:#F8F8F8;">Bônus</th>
+                        <th style="background-color:#F8F8F8;">%</th>
+                        <th>Tax</th>
+                        <th>%</th>
+                        <th style="background-color:#F8F8F8;">Quant. Mensal</th>
+                        <th style="background-color:#F8F8F8;"></th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                        <th>Produto</th>
+                        <th>Ref</th>
+                        <th>Venda</th>
+                        <th>%</th>
+                        <th>Compra</th>
+                        <th>%</th>
+                        <th>Fixos</th>
+                        <th>%</th>
+                        <th>Embal.</th>
+                        <th>%</th>
+                        <th>Comis.</th>
+                        <th>%</th>
+                        <th>Bônus</th>
+                        <th>%</th>
+                        <th>Tax</th>
+                        <th>%</th>
+                        <th>Quant. Mensal</th>
+                        <th></th>
+                    </tr>
+                  </tfoot>
+
+                  <tbody>
+                    {% for product in product_list %}
+
+                    <tr>
+                      <td style="background-color:#F8F8F8;"><span><a href="{{product.id}}/pricing">{{product.name}}</a></span></td>
+                      <td style="background-color:#F8F8F8;">{{product.ref}}</td>
+                      <td>${{product.salesprice}}</td>
+                      <td>{{product.salesprice|div:product.salesprice|mul:100|floatformat:1|intcomma}}%</td>
+                      <td style="background-color:#F8F8F8;">${{product.buyprice}}</td>
+                      <td style="background-color:#F8F8F8;">{{product.buyprice|div:product.salesprice|mul:100|floatformat:1|intcomma}}%</td>
+                      <td>${{product.salesprice|mul:spendings|div:100|floatformat:1|intcomma}}</td>
+                      <td>{{spendings|floatformat:1|intcomma}}%</th>
+                      <td style="background-color:#F8F8F8;">${{product.package_cost}}</td>
+                      <td style="background-color:#F8F8F8;">{{product.package_cost|div:product.salesprice|mul:100|floatformat:1|intcomma}}%</td>
+                      <td>${{product.sales_comission|mul:product.salesprice|div:100|floatformat:1|intcomma}}</td>
+                      <td>{{product.sales_comission}}%</td>
+                      <td style="background-color:#F8F8F8;">${{product.bonus|mul:product.salesprice|div:100|floatformat:1|intcomma}}</td>
+                      <td style="background-color:#F8F8F8;">{{product.bonus}}%</td>
+                      <td>${{budget.tax|mul:product.salesprice|div:100|floatformat:1|intcomma}}</td>
+                      <td>{{budget.tax}}%</td>
+                      <td style="background-color:#F8F8F8;">{{product.quantity}}unid</td>
+                        <td style="background-color:#F8F8F8;"><a href="delete/{{task.id}}" class="delete-btn"><span><i class="fas fa-trash"></i></span></a>
+                        <a href="{{product.id}}/edit"><span><i class="fas fa-edit"></i></span></a></td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /.container-fluid -->
+
+{% endblock content %}
+ 
+  
+{% block js %}
+  <!-- Bootstrap core JavaScript-->
+  <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+
+  <!-- Core plugin JavaScript-->
+  <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
+
+
+  <!-- Page level plugins -->
+  <script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}"></script>
+  <script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+
+  <!-- Page level custom scripts -->
+ 
+  <script src="{% static 'js/demo/datatables-demo.js' %}"></script>
+{% endblock js %}
+
+
+
+</html>
