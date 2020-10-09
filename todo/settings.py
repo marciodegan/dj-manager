@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     'budgets',
     'dashboard',
     'sales',
-    'cashflows',
     'files',
     'dates',
     'extra_views',
